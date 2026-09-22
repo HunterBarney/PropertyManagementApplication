@@ -9,7 +9,8 @@ public class Unit
     public int Bedrooms { get; set; }
     public int Bathrooms { get; set; }
     public int MonthlyRent { get; set; }
-    //TODO: Add UnitType
+    public int UnitTypeId { get; set; }
+    public UnitType UnitType { get; set; }
     //TODO: Add RentalApplications
     //TODO: Add Lease
 }
