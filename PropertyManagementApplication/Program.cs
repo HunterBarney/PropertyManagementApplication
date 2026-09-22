@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -22,8 +24,31 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+    
+    // Run the database migrations.
     var db = services.GetRequiredService<ApplicationDbContext>();
     await db.Database.MigrateAsync();
+
+    // Check if the roles exist in the database
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    List<string> roles = [AppRoles.Applicant, AppRoles.PropertyManager];
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            var result = await roleManager.CreateAsync(new IdentityRole(role));
+
+            if (!result.Succeeded)
+            {
+                StringBuilder errors = new StringBuilder();
+
+                foreach (var error in result.Errors)
+                {
+                    errors.Append(error.Description + ";");
+                }
+            }
+        }
+    }
 }
 
 // Configure the HTTP request pipeline.
