@@ -91,8 +91,7 @@ public class PropertiesController : Controller
         property.ContactPhone = input.ContactPhone;
 
         await _dbContext.SaveChangesAsync();
-        // TODO: Maybe refresh the property listing?
-        return Json(new { success = true });
+        return Redirect($"/");
     }
 
     [HttpGet]

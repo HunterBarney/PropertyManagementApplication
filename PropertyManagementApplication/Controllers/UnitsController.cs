@@ -91,6 +91,6 @@ public class UnitsController : Controller
         
         
         await _dbContext.SaveChangesAsync();
-        return Json(new { success = true });
+        return Redirect($"/Properties/Property?propertyId={input.PropertyId}");
     }
 }
