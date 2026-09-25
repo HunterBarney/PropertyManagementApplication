@@ -1,0 +1,37 @@
+﻿@using PropertyManagementApplication.ViewModels
+@model PropertyManagementApplication.ViewModels.PropertyFormViewModel
+
+<form asp-controller="Properties" asp-action="SubmitForm" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <label asp-for="Name"></label>
+    <input asp-for="Name" class="form-control"/>
+    <span asp-validation-for="Name" class="text-danger"></span>
+
+    <label asp-for="StreetAddress"></label>
+    <input asp-for="StreetAddress" class="form-control"/>
+    <span asp-validation-for="StreetAddress" class="text-danger"></span>
+
+    <label asp-for="City"></label>
+    <input asp-for="City" class="form-control"/>
+    <span asp-validation-for="City" class="text-danger"></span>
+
+    <label asp-for="Zip"></label>
+    <input asp-for="Zip" class="form-control"/>
+    <span asp-validation-for="Zip" class="text-danger"></span>
+
+    <label asp-for="State"></label>
+    <input asp-for="State" class="form-control"/>
+    <span asp-validation-for="State" class="text-danger"></span>
+
+    <label asp-for="ContactEmail"></label>
+    <input asp-for="ContactEmail" class="form-control"/>
+    <span asp-validation-for="ContactEmail" class="text-danger"></span>
+
+    <label asp-for="ContactPhone"></label>
+    <input asp-for="ContactPhone" class="form-control"/>
+    <span asp-validation-for="ContactPhone" class="text-danger"></span>
+
+    <button type="submit" class="w-100 btn btn-lg btn-primary">@(Model.Id == 0 ? "Create" : "Save changes")</button>
+</form>
+

@@ -1,0 +1,53 @@
+﻿@using PropertyManagementApplication.Data
+@model Property
+<div class="listing-section">
+    @if (Model.Units.Count == 0)
+    {
+        <div class="listing-empty">
+            <h2 class="h5">No units yet</h2>
+            <p class="mb-0">Units for this property will appear here once they have been added.</p>
+        </div>
+    }
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    @foreach (var unit in Model.Units)
+    {
+        <div class="col">
+            <article class="card listing-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
+                        <div>
+                            <p class="listing-eyebrow">Apartment</p>
+                            <h2 class="listing-title mb-0">Unit @unit.UnitNumber</h2>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(unit.UnitType))
+                        {
+                            <span class="unit-type-label">@unit.UnitType</span>
+                        }
+                    </div>
+                    <p class="unit-rent">$@unit.MonthlyRent.ToString("N0") <span>/ month</span></p>
+                    <dl class="unit-facts mb-0">
+                        <div>
+                            <dt>Bedrooms</dt>
+                            <dd>@unit.Bedrooms</dd>
+                        </div>
+                        <div>
+                            <dt>Bathrooms</dt>
+                            <dd>@unit.Bathrooms</dd>
+                        </div>
+                        <div>
+                            <dt>Sq. ft.</dt>
+                            <dd>@unit.SquareFootage.ToString("N0")</dd>
+                        </div>
+                    </dl>
+                </div>
+                <div class="card-footer listing-actions">
+                    @if(User.IsInRole(AppRoles.PropertyManager)){
+                        <button type="button" id="editUnitButton" class="btn btn-outline-secondary edit-unit-button" data-form-url="@Url.Action("EditUnitForm", "Units", new { unitId = unit.Id })">Edit unit</button>
+                    }
+                </div>
+            </article>
+        </div>
+    }
+    </div>
+</div>

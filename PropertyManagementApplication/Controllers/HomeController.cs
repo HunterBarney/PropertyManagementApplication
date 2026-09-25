@@ -1,14 +1,28 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PropertyManagementApplication.Data;
 using PropertyManagementApplication.Models;
 
 namespace PropertyManagementApplication.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
+    private readonly ApplicationDbContext _dbContext;
+
+    public HomeController(ApplicationDbContext dbContext)
     {
-        return View();
+        _dbContext = dbContext;
+    }
+    
+    public async Task<IActionResult> Index()
+    {
+        var properties = await _dbContext.Properties
+            .AsNoTracking()
+            .OrderBy(p => p.Name)
+            .ToListAsync();
+        
+        return View(properties);
     }
 
     public IActionResult Privacy()

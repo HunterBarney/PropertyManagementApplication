@@ -1,8 +1,91 @@
-﻿@{
+﻿@model List<Property>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Our Properties</h1>
+    <div>
+        <button type="button"
+                id="addPropertyButton"
+                data-form-url="@Url.Action("_PropertyForm", "Properties")"
+                class="btn btn-primary">
+            Add Property
+        </button>
+        
+        <partial name="~/Views/Properties/_PropertyList.cshtml"
+                 model="Model" />
+    </div>
+    
+<div class="modal fade"
+     id="propertyModal"
+     tabindex="-1"
+     aria-labelledby="propertyModalTitle"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="propertyModalTitle">
+                    Add Property
+                </h2>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" id="propertyModalBody">
+            </div>
+        </div>
+    </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        const addButton = document.getElementById("addPropertyButton");
+        const modalBody = document.getElementById("propertyModalBody");
+        const modal = new bootstrap.Modal(
+            document.getElementById("propertyModal"));
+
+
+        document.addEventListener("click", async (event) => {
+            const editButton = event.target.closest(".edit-property-button");
+            if (!editButton) return;
+
+            try {
+                const response = await fetch(editButton.dataset.formUrl);
+
+                if (!response.ok || response.redirected) {
+                    throw new Error("Unable to load the property form.");
+                }
+
+                modalBody.innerHTML = await response.text();
+                modal.show();
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                editButton.disabled = false;
+            }
+        });
+        
+        addButton.addEventListener("click", async () => {
+            addButton.disabled = true;
+
+            try {
+                const response = await fetch(addButton.dataset.formUrl);
+
+                if (!response.ok || response.redirected) {
+                    throw new Error("Unable to load the property form.");
+                }
+
+                modalBody.innerHTML = await response.text();
+                modal.show();
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                addButton.disabled = false;
+            }
+        });
+    </script>
+}

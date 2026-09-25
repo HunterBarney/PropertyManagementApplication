@@ -1,0 +1,91 @@
+﻿@model Property
+@{
+    ViewData["Title"] = @Model.Name;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Available @Model.Name Units</h1>
+    <div>
+        <button type="button"
+                id="addUnitButton"
+                data-form-url="@Url.Action("_UnitForm", "Units", new {propertyId = Model.Id})"
+                class="btn btn-primary">
+            Add Unit
+        </button>
+        
+        <partial name="~/Views/Units/_unitList.cshtml"
+                 model="Model" />
+    </div>
+    
+<div class="modal fade"
+     id="unitModal"
+     tabindex="-1"
+     aria-labelledby="unitModalTitle"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="unitModalTitle">
+                    Add Unit
+                </h2>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" id="unitModalBody">
+            </div>
+        </div>
+    </div>
+    </div>
+    
+</div>
+
+@section Scripts {
+    <script>
+        const addButton = document.getElementById("addUnitButton");
+        const modalBody = document.getElementById("unitModalBody");
+        const modal = new bootstrap.Modal(
+            document.getElementById("unitModal"));
+
+        addButton.addEventListener("click", async () => {
+            addButton.disabled = true;
+
+            try {
+                const response = await fetch(addButton.dataset.formUrl);
+
+                if (!response.ok || response.redirected) {
+                    throw new Error("Unable to load the unit form.");
+                }
+
+                modalBody.innerHTML = await response.text();
+                modal.show();
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                addButton.disabled = false;
+            }
+        });
+
+        document.addEventListener("click", async (event) => {
+            const editButton = event.target.closest(".edit-unit-button");
+            if (!editButton) return;
+
+            try {
+                const response = await fetch(editButton.dataset.formUrl);
+
+                if (!response.ok || response.redirected) {
+                    throw new Error("Unable to load the unit form.");
+                }
+
+                modalBody.innerHTML = await response.text();
+                modal.show();
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                editButton.disabled = false;
+            }
+        });
+    </script>
+}

@@ -1,17 +1,21 @@
-﻿namespace PropertyManagementApplication.Models;
+﻿using Microsoft.Build.Framework;
 
-public class Unit
+namespace PropertyManagementApplication.ViewModels;
+
+public class UnitFormViewModel
 {
     public int Id { get; set; }
     public int PropertyId { get; set; }
-    public Property Property { get; set; }
+    [Required]
     public int UnitNumber { get; set; }
+    [Required]
     public int Bedrooms { get; set; }
+    [Required]
     public int Bathrooms { get; set; }
+    [Required]
     public int MonthlyRent { get; set; }
-    public int UnitTypeId { get; set; }
+    [Required]
     public int SquareFootage { get; set; }
+    [Required]
     public string UnitType { get; set; }
-    //TODO: Add RentalApplications
-    //TODO: Add Lease
 }

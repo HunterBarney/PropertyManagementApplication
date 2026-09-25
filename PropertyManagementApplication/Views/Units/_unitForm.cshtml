@@ -1,0 +1,33 @@
+﻿@model PropertyManagementApplication.ViewModels.UnitFormViewModel
+
+<form asp-controller="Units" asp-action="SubmitForm" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <label asp-for="UnitNumber"></label>
+    <input asp-for="UnitNumber" class="form-control"/>
+    <span asp-validation-for="UnitNumber" class="text-danger"></span>
+
+    <label asp-for="Bedrooms"></label>
+    <input asp-for="Bedrooms" class="form-control"/>
+    <span asp-validation-for="Bedrooms" class="text-danger"></span>
+
+    <label asp-for="Bathrooms"></label>
+    <input asp-for="Bathrooms" class="form-control"/>
+    <span asp-validation-for="Bathrooms" class="text-danger"></span>
+
+    <label asp-for="MonthlyRent"></label>
+    <input asp-for="MonthlyRent" class="form-control"/>
+    <span asp-validation-for="MonthlyRent" class="text-danger"></span>
+
+    <label asp-for="SquareFootage"></label>
+    <input asp-for="SquareFootage" class="form-control"/>
+    <span asp-validation-for="SquareFootage" class="text-danger"></span>
+
+    <label asp-for="UnitType"></label>
+    <input asp-for="UnitType " class="form-control"/>
+    <span asp-validation-for="UnitType" class="text-danger"></span>
+
+    <button type="submit" class="w-100 btn btn-lg btn-primary">@(Model.Id == 0 ? "Create" : "Save changes")</button>
+    <input type="hidden" asp-for="Id"/>
+    <input type="hidden" asp-for="PropertyId"/>
+</form>

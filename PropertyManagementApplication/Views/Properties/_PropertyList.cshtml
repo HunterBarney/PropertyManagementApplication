@@ -1,0 +1,45 @@
+﻿@using PropertyManagementApplication.Data
+@model List<Property>
+<div class="listing-section">
+    @if (Model.Count == 0)
+    {
+        <div class="listing-empty">
+            <h2 class="h5">No properties yet</h2>
+            <p class="mb-0">Properties will appear here once they have been added.</p>
+        </div>
+    }
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    @foreach (var property in Model)
+    {
+        <div class="col">
+            <article class="card listing-card h-100">
+                <div class="card-body">
+                    <p class="listing-eyebrow">Property</p>
+                    <h2 class="listing-title">@property.Name</h2>
+                    <p class="listing-address">
+                        @property.StreetAddress<br />
+                        @property.City, @property.State @property.Zip
+                    </p>
+                    <dl class="listing-contact mb-0">
+                        <div>
+                            <dt>Email</dt>
+                            <dd><a href="mailto:@property.ContactEmail">@property.ContactEmail</a></dd>
+                        </div>
+                        <div>
+                            <dt>Phone</dt>
+                            <dd><a href="tel:@property.ContactPhone">@property.ContactPhone</a></dd>
+                        </div>
+                    </dl>
+                </div>
+                <div class="card-footer listing-actions">
+                    <a id="viewUnitsButton" class="btn btn-primary" asp-controller="Properties" asp-action="Property" asp-route-propertyId="@property.Id">View units <span aria-hidden="true">&rarr;</span></a>
+                    @if(User.IsInRole(AppRoles.PropertyManager)){
+                        <button type="button" id="editPropertyButton" class="btn btn-outline-secondary edit-property-button" data-form-url="@Url.Action("EditPropertyForm", "Properties", new {propertyId = property.Id})">Edit property</button>
+                    }
+                </div>
+            </article>
+        </div>
+    }
+    </div>
+</div>
